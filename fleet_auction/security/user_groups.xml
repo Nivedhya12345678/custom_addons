@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record model="ir.module.category" id="fleet_management">
+        <field name="name">Fleet Auction</field>
+    </record>
+
+    <record id="fleet_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="fleet_management"/>
+    </record>
+
+    <record id="fleet_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="fleet_management"/>
+        <field name="implied_ids" eval="[(4, ref('fleet_user'))]"/>
+    </record>
+    <record model="ir.rule" id="record_restricted_company_rule">
+        <field name="name">Restricted Record: multi-company</field>
+        <field name="model_id" ref="model_fleet_auction"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">
+            [('company_id', 'in', company_ids)]
+        </field>
+    </record>
+</odoo>

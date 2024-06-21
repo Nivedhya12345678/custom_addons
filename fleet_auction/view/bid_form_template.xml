@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="bid_form_template">
+           <t t-call="website.layout">
+               <div id="wrap" class="oe_structure oe_empty">
+                   <header class="detail_header">Auction Form</header><br/>
+                   <form action="/bid_form/submit" method="post">
+                       <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                       <label class="form">Fleet number :
+                           <t t-foreach="auction" t-as="i">
+                               <input type="text" name="number" t-att-value="i.name" class="number"/>
+                           </t>
+                       </label><br/><br/>
+                       <label class="form">Customer name:
+                           <input type="text" name="name" t-att-value="user"/>
+                       </label><br/><br/>
+                       <label class="form">Bid date:
+                           <input type="date" class="date" name="date"/>
+                       </label><br/><br/>
+                       <label class="form">Bid amount:
+                           <input type="text" class="amount" name="amount"/>
+                       </label><br/><br/>
+                       <div class="submit_button">
+                           <button type="submit">Submit</button>
+                       </div>
+                   </form>
+               </div>
+           </t>
+    </template>
+</odoo>

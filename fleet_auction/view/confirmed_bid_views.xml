@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="bid_confirm_action" model="ir.actions.act_window">
+    <field name="name">Confirmed Bid</field>
+    <field name="res_model">bid.fleet</field>
+        <field name="domain">[('state', '=' , 'confirmed')]</field>
+    <field name="view_mode">tree,form</field>
+    </record>
+    <record id="bid_confirm_view_tree" model="ir.ui.view">
+        <field name="name">bid.confirm.view.tree</field>
+        <field name="model">bid.fleet</field>
+        <field name="arch" type="xml">
+            <tree string="Channel">
+                <field name="auction_id"/>
+                <field name="customer_id"/>
+                <field name="bid_amount"/>
+                <field name="bid_price"/>
+                <field name="bid_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

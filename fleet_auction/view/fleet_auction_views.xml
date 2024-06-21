@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="fleet_auction_action" model="ir.actions.act_window">
+    <field name="name">Vehicle</field>
+    <field name="res_model">fleet.auction</field>
+    <field name="context">{"search_default_default_auction":1}</field>
+    <field name="view_mode">tree,form</field>
+    </record>
+    <record id="fleet_auction_view_tree" model="ir.ui.view">
+        <field name="name">fleet.auction.view.tree</field>
+        <field name="model">fleet.auction</field>
+        <field name="arch" type="xml">
+                <tree string="Channel">
+                    <field name="name"/>
+                    <field name="customer_id"/>
+                    <field name="current_value"/>
+                    <field name="current_user"/>
+                    <field name="vehicle_name_id"/>
+                    <field name="vehicle_brand_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"  decoration-warning="end_date == current_date"/>
+                    <field name="tag_ids"  widget="many2many_tags"/>
+                    <field name="start_price"/>
+                    <field name="won_price"/>
+                    <field name="state"/>
+                </tree>
+        </field>
+    </record>
+    <record id="fleet_auction_view_form" model="ir.ui.view">
+        <field name="name">fleet.auction.view.form</field>
+        <field name="model">fleet.auction</field>
+        <field name="arch" type="xml">
+            <form string="Test">
+                <header>
+                    <button name="action_confirm" class="oe_highlight" string="Confirm"  type="object"
+                            invisible="state not in ('draft')"/>
+                    <button name="action_end" class="oe_highlight" string="End" type="object"
+                            invisible="state not in ('ongoing')" groups="fleet_auction.fleet_manager"/>
+                    <button name="action_cancel" class="oe_highlight" string="Cancelled" type="object"
+                            invisible="state not in ('success')" />
+                    <button name="action_create_auction" class="oe_highlight" string="Create Auction"
+                            type="object" invisible="state not in('ongoing')"/>
+                    <button name="action_create_invoice" class="oe_highlight" string="Create Invoice" type="object"
+                            invisible="state not in ('success')" groups="fleet_auction.fleet_manager"/>
+
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,ongoing,success" statusbar_invisible="cancelled" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <div name="button_box" position="inside">
+                     <button class="oe_stat_button" type="object" name="action_bid"
+                        icon="fa-car">
+                     <field string="Bid" name="bid_count" widget="statinfo"/>
+                     </button>
+                        <button class="oe_stat_button" type="object" name="action_invoice"
+                        icon="fa-pencil-square-o">
+                     <field string="Invoice" name="invoice_count" widget="statinfo"/>
+                     </button>
+                    </div>
+                    <field name="description" widget="image" class="oe_avatar"/>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <widget name="web_ribbon" title="Paid" invisible="fleet_payment_state != 'paid'"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <group>
+                        <group>
+                            <group>
+                                <field name="customer_id" context="{'show_address': 1}" options='{"always_reload": True}' invisible="state not in ('success')"/>
+                                <field name="phone" invisible="state not in ('success')"/>
+                                <field name="email_from" invisible="state not in ('success')"/>
+                                <field name="vehicle_name_id"/>
+                                <field name="company_id"/>
+                                <field name="tag_ids" widget="many2many_tags"/>
+                            </group>
+                            <group>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="current_value"/>
+                                <field name="related_invoice_id" invisible="1"/>
+                                <field name="fleet_payment_state" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <group>
+                                    <field name="current_user"/>
+                                    <field name="vehicle_brand_id"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="start_price" widget="monetary"/>
+                                    <field name="won_price" widget="monetary" invisible="state not in ('success')"/>
+                                    <field name="active" invisible="1"/>
+                                </group>
+                            </page>
+                            <page string="Bids">
+                                <field name="bid_ids"/>
+                            </page>
+                            <page string="Expenses">
+                                <field name="expenses"/>
+                                <group>
+                                    <field name="total_expense"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </group>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="fleet_auction_view_search" model="ir.ui.view">
+            <field name="name">fleet.auction.view.search</field>
+            <field name="model">fleet.auction</field>
+            <field name="arch" type="xml">
+                <search string="new_search">
+                    <field name="name"/>
+                    <separator/>
+                    <filter string="Auction" name="default_auction" domain="['|',('state', '=', 'ongoing'), ('state','=', 'draft')]"/>
+                    <filter string="Ongoing" name="state" domain="[('state', '=','ongoing')]"/>
+                    <filter string="Date" name="start_date" domain="[('start_date','=',datetime.datetime.now())]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Customer" name="customer_id" context="{'group_by': 'customer_id'}"/>
+                        <filter string="State" name="state" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+    </record>
+</odoo>

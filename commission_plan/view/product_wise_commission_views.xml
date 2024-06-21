@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="product_commission_action" model="ir.actions.act_window">
+    <field name="name">Product wise commission</field>
+    <field name="res_model">product.commission</field>
+    <field name="view_mode">tree,form</field>
+    </record>
+     <record id="product_commission_view_tree" model="ir.ui.view">
+        <field name="name">product.commission.view.tree</field>
+        <field name="model">product.commission</field>
+        <field name="arch" type="xml">
+                <tree string="Channel" editable="bottom">
+                    <field name="product_id"/>
+                    <field name="product_category_id"/>
+                    <field name="maximum_amount"/>
+                    <field name="rate_percentage"/>
+                </tree>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="fleet_expense_action" model="ir.actions.act_window">
+    <field name="name">Expense</field>
+    <field name="res_model">fleet.expense</field>
+    <field name="view_mode">tree</field>
+    </record>
+    <record id="fleet_expense_view_tree" model="ir.ui.view">
+        <field name="name">fleet.confirm.view.tree</field>
+        <field name="model">fleet.expense</field>
+        <field name="arch" type="xml">
+            <tree string="Channel">
+                <field name="auction_id"/>
+                <field name="expense"/>
+                <field name="price_unit"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="company_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="revenue_commission_action" model="ir.actions.act_window">
+    <field name="name">Revenue wise commission</field>
+    <field name="res_model">revenue.commission</field>
+    <field name="view_mode">tree,form</field>
+    </record>
+     <record id="revenue_commission_view_tree" model="ir.ui.view">
+        <field name="name">revenue.commission.view.tree</field>
+        <field name="model">revenue.commission</field>
+        <field name="arch" type="xml">
+                <tree string="Channel" editable="bottom">
+                    <field name="sequence" widget="handle"/>
+                    <field name="from_amount"/>
+                    <field name="to_amount"/>
+                    <field name="rate"/>
+<!--                    <field name="revenue_type"/>-->
+                </tree>
+        </field>
+    </record>
+</odoo>

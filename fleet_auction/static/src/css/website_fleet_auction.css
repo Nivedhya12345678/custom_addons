@@ -1,0 +1,63 @@
+.grid-container {
+ display: inline-grid;
+ grid-template-columns: auto auto auto;
+ grid-template-rows: auto auto auto;
+ padding: 10px;
+ gap: 50px 50px;
+ place-self: center;
+ }
+.grid-item {
+ background-color: goldenrod;
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  font-size: 15px;
+  text-align: center;
+ }
+.detail_header {
+  position: relative;
+  align-self: center;
+  left: 40%;
+  font-size: 30px;
+  font-weight: bold;
+}
+.auction_label {
+  position: relative;
+  left: 740px;
+  font-size: large;
+  color: green;
+ }
+ .create_bid {
+  position: relative;
+  left: 723px;
+  top: 40px;
+  }
+  .button{
+  position: relative;
+  left: 784px;
+  top: 39px;
+  }
+  .form{
+  position: relative;
+  left: 680px;
+  }
+  .input{
+  position: relative;
+  left: 54px;
+  }
+  .date{
+   position: relative;
+  left: 54px;
+  }
+  .amount{
+  position: relative;
+  left: 32px;
+  }
+  .submit_button{
+  position: relative;
+  left: 760px;
+  }
+  .number{
+  position: relative;
+  left: 17px;
+  }
+

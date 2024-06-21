@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="detail_web_page_template">
+           <t t-call="website.layout">
+               <div id="wrap" class="oe_structure oe_empty">
+                   <div class="auction_details" >
+                       <header class="detail_header">Auction details</header><br/>
+                           <t t-foreach="auction_detail" t-as="auction">
+                               <label class="auction_label">Vehicle name:
+                                   <t t-esc="auction.vehicle_name_id.name"/>
+                               </label><br/><br/>
+                               <label class="auction_label">Vehicle brand:
+                                   <t t-esc="auction.vehicle_brand_id.name"/>
+                               </label><br/><br/>
+                               <label class="auction_label">Responsible:
+                                   <t t-esc="auction.current_user.name"/>
+                               </label><br/><br/>
+                               <label class="auction_label">Start date:
+                                   <t t-esc="auction.start_date"/>
+                               </label><br/><br/>
+                               <label class="auction_label">End date:
+                                   <t t-esc="auction.end_date"/>
+                               </label><br/><br/>
+                               <label class="auction_label">Current value:
+                                   <t t-esc="auction.currency_id.symbol"/>
+                                   <t t-esc="auction.current_value"/>
+                               </label>
+                           </t>
+                   </div>
+                   <div class="create_bid">
+                   <h4>Create bids click here</h4>
+                   </div>
+                   <div class="button">
+                       <a t-attf-href="/bid_form/{{auction.id}}">
+                           <button type="button" class="btn btn-primary">Create bid</button>
+                       </a>
+                   </div>
+               </div>
+           </t>
+    </template>
+</odoo>

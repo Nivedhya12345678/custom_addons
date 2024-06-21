@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <menuitem id="fleet_auction_root" name="Fleet Auction">
+    <menuitem id="fleet_menu" name="Fleet">
+        <menuitem id="fleet_auction_menu_action" action="fleet_auction_action"/>
+        <menuitem id="bid_fleet_menu_action" action="bid_fleet_action" groups="fleet_auction.fleet_manager"/>
+    </menuitem>
+    <menuitem id="confirm_menu" name="Bid">
+            <menuitem id="confirm_menu_action" action="bid_confirm_action"/>
+            <menuitem id="fleet_menu_action" action="fleet_expense_action" groups="fleet_auction.fleet_manager"/>
+            <menuitem id="fleet_cancel_reason_menu_action" action="fleet_cancel_action" groups="fleet_auction.fleet_manager"/>
+    </menuitem>
+        <menuitem id="report_menu" name="Report">
+            <menuitem id="report_menu_action" action="fleet_wizard_action"/>
+        </menuitem>
+    </menuitem>
+</odoo>

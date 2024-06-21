@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!--Template to send demo mail template for the customer-->
+        <record id="mail_template" model="mail.template">
+            <field name="name">Email Template</field>
+            <field name="model_id" ref="fleet_auction.model_account_move"/>
+            <field name="email_from">{{object.company_id.email}}</field>
+            <field name="email_to">{{object.partner_id.email}}</field>
+            <field name="subject">{{ object.company_id.name }} Invoice (Ref {{ object.name }})</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <div style="justify-content: center;background-color: #714B67; padding:0.6rem;padding-left: 35px;text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;width:40%">
+        <h2>
+            Dear  <t t-out="object.partner_id.name"/>
+        </h2>
+        <div>
+            <h3>
+                Here is your invoice <t t-out="object.name"/>  amounting in <t t-out="object.amount_total"/> from YourCompany.
+            </h3>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    Regards,
+    <br/>
+                    <t t-out="object.company_id.name"/>
+    <br/>
+</div>
+            </field>
+        </record>
+        <record id="fleet_mail_template" model="mail.template">
+            <field name="name">Email Template</field>
+            <field name="model_id" ref="fleet_auction.model_fleet_auction"/>
+            <field name="email_from">{{object.company_id.email}}</field>
+            <field name="email_to">{{object.customer_id.email}}</field>
+            <field name="subject">{{ object.company_id.name }} Auction (Ref {{ object.name }})</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <div style="justify-content: center;background-color: #714B67; padding:0.6rem;padding-left: 35px;text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;width:40%">
+        <h2>
+            Dear  <t t-out="object.customer_id.name"/>
+        </h2>
+        <div>
+            <h3>
+               congratulations
+            </h3>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    Regards,
+    <br/>
+                    <t t-out="object.company_id.name"/>
+    <br/>
+</div>
+            </field>
+        </record>
+
+    </data>
+
+</odoo>

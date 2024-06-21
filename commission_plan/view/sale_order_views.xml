@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="sale_order_view_inherit">
+    <field name="name">sale.order.view.inherit</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="arch" type="xml">
+<!--        <xpath expr="//field[@name='payment_term_id']" position="after">-->
+<!--            <field name="commission_id"/>-->
+<!--        </xpath>-->
+        <xpath expr="//page[@name='order_lines']" position="inside">
+            <group class="oe_subtotal_footer">
+                <field name="commission_amount"/>
+            </group>
+        </xpath>
+    </field>
+    </record>
+</odoo>

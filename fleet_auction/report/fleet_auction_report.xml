@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <record id="action_report_fleet_template" model="ir.actions.report">
+       <field name="name">Fleet Report</field>
+       <field name="model">fleet.auction</field>
+       <field name="report_type">qweb-pdf</field>
+       <field name="report_name">fleet_auction.fleet_auction_report</field>
+       <field name="report_file">fleet_auction.fleet_auction_report</field>
+       <field name="binding_model_id" ref="fleet_auction.model_fleet_auction"/>
+       <field name="paperformat_id" ref="fleet_auction.paperformat_fleet"/>
+       <field name="binding_type">report</field>
+   </record>
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+         <record id="fleet_product" model="product.template">
+             <field name="name">Fleet Product</field>
+             <field name="type">service</field>
+         </record>
+        <record id="fleet_expense_product" model="product.template">
+             <field name="name">Fleet Expense</field>
+             <field name="type">service</field>
+         </record>
+    </data>
+</odoo>

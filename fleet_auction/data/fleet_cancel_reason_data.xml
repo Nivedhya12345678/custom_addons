@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="cancel_reason_1" model="fleet.cancel.reason">
+        <field name="name">Too expensive</field>
+        </record>
+        <record id="cancel_reason_2" model="fleet.cancel.reason">
+        <field name="name">We don't have people</field>
+        </record>
+        <record id="cancel_reason_3" model="fleet.cancel.reason">
+        <field name="name">Not interested</field>
+        </record>
+    </data>
+</odoo>

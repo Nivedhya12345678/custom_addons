@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="web_form_template">
+           <t t-call="website.layout">
+               <div id="wrap" class="oe_structure oe_empty">
+                   <t t-foreach="details" t-as="detail">
+                       <div class="grid-container">
+                           <div class="grid-item">
+                               <a t-attf-href="/detail_web_page/{{detail.id}}">
+<!--                                   <t t-esc="detail.id"/>-->
+                               <t t-esc="detail.name"/><br/>
+                               </a>
+                               <t t-esc="detail.vehicle_name_id.name"/>
+
+                           </div>
+                       </div>
+                   </t>
+               </div>
+           </t>
+       </template>
+</odoo>

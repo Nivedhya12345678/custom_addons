@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="crm_commission_action" model="ir.actions.act_window">
+    <field name="name">Commission</field>
+    <field name="res_model">crm.commission</field>
+    <field name="view_mode">tree,form</field>
+    </record>
+     <record id="crm_commission_view_tree" model="ir.ui.view">
+        <field name="name">crm.commission.view.tree</field>
+        <field name="model">crm.commission</field>
+        <field name="arch" type="xml">
+                <tree string="Channel">
+                    <field name="name"/>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                </tree>
+        </field>
+    </record>
+     <record id="crm_commission_view_form" model="ir.ui.view">
+        <field name="name">crm.commission.view.form</field>
+        <field name="model">crm.commission</field>
+        <field name="arch" type="xml">
+            <form string="Test">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="commission_type"/>
+                            <field name="revenue_type" invisible="commission_type not in ('revenue_wise')"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="from_date"/>
+                            <field name="to_date"/>
+                        </group>
+                        <notebook>
+                            <page string="Commission">
+                                <field name="product_commission_ids" invisible="commission_type not in ('product_wise')"/>
+                                <field name="revenue_commission_ids" invisible="commission_type not in ('revenue_wise')"/>
+                            </page>
+                        </notebook>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

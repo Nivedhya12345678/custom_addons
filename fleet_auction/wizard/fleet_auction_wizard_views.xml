@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="fleet_wizard_action" model="ir.actions.act_window">
+    <field name="name">Report</field>
+    <field name="res_model">fleet.auction.wizard</field>
+    <field name="view_mode">form</field>
+        <field name="view_id" ref="fleet_auction_wizard_view_form"/>
+        <field name="target">new</field>
+    </record>
+    <record id="fleet_auction_wizard_view_form" model="ir.ui.view">
+            <field name="name">fleet.auction.wizard.form</field>
+            <field name="model">fleet.auction.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                       <group>
+                           <group>
+                               <field name="customer_id" />
+                               <field name="current_user"/>
+                               <field name="state"/>
+                           </group>
+                           <group>
+                               <field name="from_date" />
+                               <field name="to_date"/>
+                           </group>
+                       </group>
+                    <footer>
+                        <button name="action_print" string="Print PDF report" class="btn-primary" type="object"/>
+                        <button name="print_xlsx" string="Print XLSX report" class="btn-primary" type="object"/>
+                        <button string="Discard" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+    </record>
+</odoo>
