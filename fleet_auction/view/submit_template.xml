@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="thank_you_page">
+           <t t-call="website.layout">
+               <div id="wrap" class="oe_structure oe_empty">
+                   <div class="thank_you">
+                       <h2>Thank you</h2><br/><br/>
+                       <h3>Bid created successfully</h3>
+                   </div>
+               </div>
+           </t>
+       </template>
+</odoo>

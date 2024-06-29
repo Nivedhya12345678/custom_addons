@@ -6,22 +6,22 @@
                    <header class="detail_header">Auction Form</header><br/>
                    <form action="/bid_form/submit" method="post">
                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                       <label class="form">Fleet number :
-                           <t t-foreach="auction" t-as="i">
-                               <input type="text" name="number" t-att-value="i.name" class="number"/>
-                           </t>
+                       <label class="bid_form">
+                               <input type="hidden" name="name"  class="number" id="number"/>
                        </label><br/><br/>
-                       <label class="form">Customer name:
-                           <input type="text" name="name" t-att-value="user"/>
+                       <label class="bid_form">Customer name:
+                           <input type="text" name="customer" t-att-value="user"/>
                        </label><br/><br/>
-                       <label class="form">Bid date:
-                           <input type="date" class="date" name="date"/>
+                       <label class="bid_form">Bid date:
+                           <input type="date" class="date" name="date" required= "true"/>
                        </label><br/><br/>
-                       <label class="form">Bid amount:
-                           <input type="text" class="amount" name="amount"/>
+                       <label class="bid_form">Bid amount:
+                           <input type="text" class="bid_amount" name="amount" id="amount" required= "true"/>
                        </label><br/><br/>
                        <div class="submit_button">
-                           <button type="submit">Submit</button>
+                           <a href="/thank_you_page">
+                           <button type="submit" t-att-value="auction" id="button">Submit</button>
+                           </a>
                        </div>
                    </form>
                </div>

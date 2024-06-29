@@ -31,6 +31,7 @@
         'view/website_template_views.xml',
         'view/auction_details_template.xml',
         'view/bid_form_template.xml',
+        'view/submit_template.xml',
 
         'report/fleet_auction_report.xml',
         'report/fleet_auction_report_template.xml',
@@ -48,7 +49,7 @@
         ],
         'web.assets_frontend': [
             'fleet_auction/static/src/css/website_fleet_auction.css',
-            'fleet_auction/static/src/js/bid_form.js',
+            'fleet_auction/static/src/js/bid_manager.js',
         ],
     },
     'license': 'LGPL-3',

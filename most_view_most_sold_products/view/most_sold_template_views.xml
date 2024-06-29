@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="most_sold_product_template" name="Most sold">
+        <section class="top_sold_product_snippet">
+            <div class="ref-arrival-content">
+                <center>
+                <h4>Most sold product</h4>
+                </center>
+            </div>
+            <div id="top_products"/>
+        </section>
+    </template>
+</odoo>
