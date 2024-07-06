@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="website_cart_view" inherit_id="website_sale.cart_lines">
+          <xpath expr="//t[@t-call='website_sale.cart_line_description_following_lines']" position="after">
+              <div>
+                  <t t-foreach="bom_details" t-as="bom">
+                      <t t-if="line.product_id == bom['product_id']">
+                          <t t-esc="bom['default_code']"/>
+                          <t t-esc= "bom['product_name']"/>
+                      </t>
+                  </t>
+              </div>
+         </xpath>
+    </template>
+</odoo>

@@ -9,6 +9,7 @@ class ResConfigSettings(models.TransientModel):
     product_ids = fields.Many2many('product.product', string="Multiple products")
 
     def set_values(self):
+        """Set values from the class ResConfigSettings"""
         res = super(ResConfigSettings, self).set_values()
         self.env['ir.config_parameter'].sudo().set_param(
             'bill_of_material_in_cart.product_ids', self.product_ids.ids)
@@ -16,6 +17,7 @@ class ResConfigSettings(models.TransientModel):
 
     @api.model
     def get_values(self):
+        """Get values from the class ResConfigSettings"""
         res = super(ResConfigSettings, self).get_values()
         with_user = self.env['ir.config_parameter'].sudo()
         multiple_products = with_user.get_param('bill_of_material_in_cart.product_ids')

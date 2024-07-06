@@ -1,16 +1,15 @@
 {
-    'name': "Bill of material in cart",
+    'name': "Disable delivery",
     'version': '17.0.1.0',
-    'depends': ['base', 'website','website_sale','mrp',],
+    'depends': ['base', 'sale','stock'],
     'author': "Joyal",
     'category': 'Category',
     'description': """
-    Bill of material in cart
+    Disable delivery
     """,
     'data': [
-        'view/res_config_settings_views.xml',
-        'view/website_sale_cart_views.xml',
-
+        'view/sale_order_views.xml',
+        'view/hide_button_views.xml',
     ],
     'demo': [
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="product_owner_in_pos.Orderline"
+        t-inherit="point_of_sale.Orderline" t-inherit-mode="extension" owl="1">
+            <xpath expr="//div[hasclass('product-name')]" position="after">
+                <span>
+                    <t t-esc="props.line.owner_id[1]"/>
+                </span>
+            </xpath>
+        </t>
+</templates>
