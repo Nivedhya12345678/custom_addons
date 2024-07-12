@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="point_of_sale.ClearButton" owl="1">
+        <button class="control-button btn btn-light rounded-0 fw-bolder" style="color:red" t-on-click="removeLine">
+            <span>Clear Orders</span>
+        </button>
+    </t>
+</templates>

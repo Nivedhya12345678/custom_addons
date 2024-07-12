@@ -9,7 +9,7 @@
     """,
     'data': [
         'view/sale_order_views.xml',
-        'view/hide_button_views.xml',
+
     ],
     'demo': [
 

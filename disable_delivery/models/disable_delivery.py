@@ -1,17 +1,22 @@
 # -*- coding: utf-8 -*-
-from odoo import api,fields, models
+from odoo import api, fields, models, Command
 
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
-    delivery_count = fields.Integer(string='Delivery')
+
+    allow_delivery = fields.Boolean(string='Allow delivery')
 
     def action_confirm(self):
-
-        return super().action_confirm()
+        for order in self:
+            if order.allow_delivery:
+                order.allow_delivery == True
+                self.order_line._action_launch_stock_rule()
+            else:
+                return super().action_confirm()
 
     def action_delivery(self):
-        return self._get_action_view_picking(self.picking_ids)
-
-
+        self.order_line._action_launch_stock_rule()
+        return super().action_confirm()
+       
 
