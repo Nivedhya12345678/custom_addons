@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="stock_wizard_report_view_form" model="ir.ui.view">
+            <field name="name">stock.report.wizard.report.form</field>
+            <field name="model">stock.report.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                       <group>
+                           <group>
+                               <field name="current_date" />
+                           </group>
+                       </group>
+                    <footer>
+                        <button name="action_print" string="Print PDF report" class="btn-primary" type="object"/>
+                        <button string="Discard" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+    </record>
+
+      <record id="stock_wizard_action" model="ir.actions.act_window">
+            <field name="name">Report</field>
+            <field name="res_model">stock.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="stock_wizard_report_view_form"/>
+            <field name="target">new</field>
+    </record>
+    <menuitem id="stock_report_menu_action" name= "Stock Report"
+              sequence="99" action="stock_wizard_action"
+              parent="stock.menu_warehouse_report" />
+</odoo>

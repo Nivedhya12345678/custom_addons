@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <template id="product_stock_report">
+       <t t-call="web.html_container">
+           <t t-call="web.external_layout">
+               <div class="page">
+                   <div class="oe_structure"/>
+                   <h2>Stock Report</h2>
+                   <br/>
+                    <td>Print date :</td>
+                   <span t-esc="time.strftime('%Y-%m-%d')"/><br/>
+               </div>
+               <t t-foreach="data" t-as="location">
+                   <t t-if="location.id">
+                       <h4 class="text-center" t-esc="location.complete_name"/>
+                       <table class="table table-sm table-bordered">
+                           <thead>
+                               <tr>
+                                   <th class="text-center"><span>Sl.No</span></th>
+                                   <th class="text-center"><span>Product</span></th>
+                                   <th class="text-center"><span>Quantity</span></th>
+                                   <th class="text-center"><span>Price</span></th>
+                               </tr>
+                           </thead>
+                           <t t-set="j" t-value="1" />
+                           <t t-foreach="docs" t-as="i">
+                               <t t-if="location.id == i['location_id']">
+                                   <tr>
+                                       <td>
+                                           <span t-esc="j"/>
+                                           <t t-set="j" t-value="j+1"/>
+                                       </td>
+                                       <td>
+                                           <span t-esc="i['product']"/>
+                                       </td>
+                                       <td>
+                                           <span t-esc="i['quantity']"/>
+                                       </td>
+                                       <td>
+                                           <span t-esc="i['list_price']"/>
+                                       </td>
+                                   </tr>
+                               </t>
+                           </t>
+                       </table>
+                   </t>
+               </t>
+           </t>
+       </t>
+   </template>
+</odoo>

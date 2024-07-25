@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-import logging
-import pprint
+import hashlib
+import hmac
+import uuid
 
-from werkzeug import urls
-
-from odoo.addons.payment_paytrail.controllers.main import PaytrailController
-
+import requests
+import json
 from odoo import _, models
-
-_logger = logging.getLogger(__name__)
+from odoo.exceptions import ValidationError
+from odoo.http import request, _logger
+from odoo.tools.safe_eval import datetime
 
 
 class PaymentTransaction(models.Model):
@@ -18,54 +18,126 @@ class PaymentTransaction(models.Model):
     def _get_specific_rendering_values(self, processing_values):
 
         res = super()._get_specific_rendering_values(processing_values)
-        print('procs',res)
         if self.provider_code != 'paytrail':
             return res
 
-        payload = self._paytrail_prepare_payment_request_payload()
-        print('payloard',payload)
-        _logger.info("sending '/payments' request for link creation:\n%s", pprint.pformat(payload))
-        payment_data = self.provider_id._paytrail_make_request('/payments', data=payload)
-        print('payment data',payment_data)
+        secret_key = self.provider_id.paytrail_secret_key
+        merchant_id = self.provider_id.paytrail_merchant_id
+        order_stamp = str(uuid.uuid4())
+        base_url = "https://7626-115-245-156-254.ngrok-free.app/"
+        current_datetime = datetime.datetime.utcnow()
+        timestamp = current_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+        checkout_nonce = self.reference
+        product_list = []
+        for records in request.website.sale_get_order():
+            for vals in records.website_order_line:
+                product_stamp = str(uuid.uuid4())
+                orderline = {
+                    "unitPrice": int(vals.price_total),
+                    "vatPercentage": 0,
+                    "units": vals.product_uom_qty,
+                    "productCode": vals.product_id.default_code,
+                    "stamp": product_stamp
+                }
+                product_list.append(orderline)
 
-        # The provider reference is set now to allow fetching the payment status after redirection
-        self.provider_reference = payment_data.get('id')
-
-        checkout_url = payment_data['_link']['checkout']['href']
-        parsed_url = urls.url_parse(checkout_url)
-        url_params = urls.url_decode(parsed_url.query)
-        print("print",url_params)
-        return {'api_url': checkout_url, 'url_params': url_params}
-
-    def _paytrail_prepare_payment_request_payload(self):
-        """ Create the payload for the payment request based on the transaction values.
-
-        :return: The request payload
-        :rtype: dict
-        """
-        # user_lang = self.env.context.get('lang')
-        base_url = self.provider_id.get_base_url()
-        print(base_url)
-        print('self', self.reference)
-        redirect_url = urls.url_join(base_url, PaytrailController._return_url)
-        paytrail_values = {
-            'reference': self.reference,
-            'amount':self.amount,
-            'currency':self.currency_id.id,
-            'customer':{
-                'email': self.partner_email,
+        payload = {
+            "stamp": order_stamp,
+            "reference": self.reference,
+            "amount": int(self.amount),
+            "currency": "EUR",
+            "language": "EN",
+            "items": product_list,
+            "customer": {
+                "email": self.partner_email
+            },
+            "redirectUrls": {
+                "success": base_url + "/paytrail-payment/success",
+                "cancel": base_url + "/paytrail-payment/cancel",
+            },
+            "callbackUrls": {
+                "success": base_url + "/paytrail-payment/success",
+                "cancel": base_url + "/paytrail-payment/cancel",
             },
 
-            'language':self.partner_lang,
-
-            # 'provider_id': self
-
-            # 'locale': user_lang if user_lang in const.SUPPORTED_LOCALES else 'en_US',
-            # 'method': [const.PAYMENT_METHODS_MAPPING.get(
-            #     self.payment_method_code, self.payment_method_code
-            # )],
-            # Since Mollie does not provide the transaction reference when returning from
-            # redirection, we include it in the redirect URL to be able to match the transaction.
-            'redirectUrl': redirect_url,
         }
-        return paytrail_values
+        payload_json = json.dumps(payload)
+        signature_header = {"checkout-account": merchant_id,
+                            "checkout-algorithm": "sha256",
+                            "checkout-method": "POST",
+                            "checkout-nonce": checkout_nonce,
+                            "checkout-timestamp": f"{timestamp}"}
+        sha = self.calculate_hmac(secret_key, signature_header, payload_json)
+        headers = {
+            'checkout-account': merchant_id,
+            'checkout-algorithm': 'sha256',
+            'checkout-method': 'POST',
+            'checkout-nonce': checkout_nonce,
+            'checkout-timestamp': timestamp,
+            'signature': sha,
+            'content-type': 'application/json; charset=utf-8',
+        }
+
+        url = "https://services.paytrail.com/payments/"
+
+        response = requests.post(url, headers=headers, data=payload_json)
+        dict = response.json()['href']
+        return {'api_url': dict}
+
+    @staticmethod
+    def compute_sha256_hash(message: str, secret: str) -> str:
+
+        hash = hmac.new(secret.encode(), message.encode(), digestmod=hashlib.sha256)
+        return hash.hexdigest()
+
+    def calculate_hmac(self, secret, headerParams: dict,
+                       body: str = '') -> str:
+        data = []
+        for key, value in headerParams.items():
+            if key.startswith('checkout-'):
+                data.append('{key}:{value}'.format(key=key, value=value))
+
+        data.append(body)
+        item = '\n'.join(data)
+        return self.compute_sha256_hash(item, secret)
+
+
+    def _get_tx_from_notification_data(self, provider_code, notification_data):
+        tx = super()._get_tx_from_notification_data(provider_code, notification_data)
+        if provider_code != 'paytrail' or len(tx) == 1:
+            return tx
+
+        reference = notification_data.get('checkout-reference')
+        if not reference:
+            raise ValidationError(
+                "Paytrail: " + _("Received data with missing reference %(ref)s.", ref=reference)
+            )
+
+        tx = self.search([('reference', '=', reference), ('provider_code', '=', 'paytrail')])
+        if not tx:
+            raise ValidationError(
+                "Paytrail: " + _("No transaction found matching reference %s.", reference)
+            )
+
+        return tx
+
+    def _process_notification_data(self, notification_data):
+
+        super()._process_notification_data(notification_data)
+        if self.provider_code != 'paytrail':
+            return
+
+        self.provider_reference = notification_data.get('checkout-reference')
+        payment_method_type = notification_data.get('checkout-provider', '')
+        payment_method = self.env['payment.method']._get_from_code(payment_method_type)
+        self.payment_method_id = payment_method or self.payment_method_id
+
+        status = notification_data.get('checkout-status')
+        if status == 'ok':
+            self._set_done()
+            self.env['ir.config_parameter'].sudo().set_param('sale.automatic_invoice', 'True')
+        else:
+            error_code = notification_data.get('Error')
+            self._set_error(
+                "Paytrail: " + _("The payment encountered an error with code %s", error_code)
+            )

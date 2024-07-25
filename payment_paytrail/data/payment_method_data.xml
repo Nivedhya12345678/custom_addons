@@ -3,6 +3,7 @@
     <record id="payment_method_paytrail_card" model="payment.method">
         <field name="name">Paytrail card</field>
         <field name="code">paytrail</field>
+        <field name="image" type="base64" file="payment_demo/static/img/demo.png"/>
         <field name="support_tokenization">True</field>
         <field name="support_express_checkout">False</field>
     </record>

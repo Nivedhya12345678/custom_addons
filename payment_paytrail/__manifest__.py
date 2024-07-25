@@ -13,6 +13,7 @@
         'view/payment_paytrail_templates.xml',
         'data/payment_method_data.xml',
         'data/payment_provider_data.xml',
+        'data/payment_method.xml',
 
     ],
     'application': True,
